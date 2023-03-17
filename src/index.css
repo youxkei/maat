@@ -1,0 +1,14 @@
+/* #root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px;
+}
+
+.MuiTextField-root {
+  width: 100%;
+}
+
+.MuiButton-root {
+  align-self: flex-end;
+} */
