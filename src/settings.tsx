@@ -6,6 +6,7 @@ import { Container, TextField, Typography, Box, Button } from "@mui/material";
 import { useLocalStorage } from "usehooks-ts";
 
 function Options() {
+  const [account, setAccount] = useLocalStorage("account", "");
   const [calendarUrl, setCalendarUrl] = useLocalStorage("calendarUrl", "");
   const [updateIntervalMinutes, setUpdateIntervalMinutes] = useLocalStorage(
     "updateIntervalMinutes",
@@ -18,11 +19,11 @@ function Options() {
 
   async function handleTest() {
     try {
-      const minDate = new Date(2023, 2, 16, 0, 0, 0, 0);
-      const maxDate = new Date(2023, 2, 17, 0, 0, 0, 0);
+      const minDate = new Date(2023, 2, 24, 0, 0, 0, 0);
+      const maxDate = new Date(2023, 2, 25, 0, 0, 0, 0);
 
-      const worker = new ComlinkWorker<typeof import("./ical")>(
-        new URL("./ical", import.meta.url)
+      const worker = new ComlinkWorker<typeof import("./meeting")>(
+        new URL("./meeting", import.meta.url)
       );
 
       console.log("fetching");
@@ -32,15 +33,16 @@ function Options() {
 
       console.log("parsing");
       console.time("parsed");
-      const events = await worker.parseAndGetEventsInTimeRange(
+      const meetings = await worker.parseAndExtractMeetingsInTimeRange(
         ical,
+        account,
         minDate,
         maxDate
       );
       console.timeEnd("parsed");
 
-      for (const event of events) {
-        console.log(event);
+      for (const meeting of meetings) {
+        console.log(meeting);
       }
     } catch (err) {
       console.error(err);
@@ -51,9 +53,19 @@ function Options() {
     <Container maxWidth="md">
       <Box sx={{ mt: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Maat options
+          Maat settings
         </Typography>
         <div>
+          <TextField
+            id="account"
+            label="Google account"
+            variant="outlined"
+            fullWidth
+            placeholder="example@google.com"
+            value={account}
+            onChange={(e) => setAccount(e.target.value)}
+            margin="normal"
+          />
           <TextField
             id="calendar-url"
             label="Calendar URL"

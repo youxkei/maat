@@ -23,7 +23,7 @@ export default defineConfig({
         background: {
           service_worker: "src/sw.ts",
         },
-        options_page: "options.html",
+        options_page: "settings.html",
         permissions: ["alarms", "tabs"],
         host_permissions: ["https://calendar.google.com/*"],
       }),

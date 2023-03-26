@@ -12,13 +12,17 @@ declare module "ical.js" {
     constructor(jcal: JCal);
 
     getAllSubcomponents(name: string): Component[];
-    getFirstPropertyValue(name: string): string;
+    getFirstPropertyValue(name: string): string | null;
   }
 
   declare class Event {
     component: Component;
-    summary: string;
-    startDate: Time;
+    attendees: Property[];
+
+    uid: string | null;
+    recurrenceId: Time | null;
+    summary: string | null;
+    startDate: Time | null;
 
     constructor(component: Component);
     isRecurring(): boolean;
@@ -32,6 +36,11 @@ declare module "ical.js" {
 
   declare class RecurExpansion {
     next(): Time;
+  }
+
+  declare class Propery {
+    getFirstValue(): string;
+    getParameter(name: string): string;
   }
 
   declare function parse(input: string): JCal;
