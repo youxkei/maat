@@ -44,27 +44,19 @@ function eventToMeeting(event: ICal.Event, account: string) {
 export function parseAndExtractMeetingsInTimeRange(
   input: string,
   account: string,
-  minDate: Date,
-  maxDate: Date
+  minTimeMs: number,
+  maxTimeMs: number
 ) {
   const vevents = new ICal.Component(ICal.parse(input)).getAllSubcomponents(
     "vevent"
   );
 
   const meetings = [] as Meeting[];
-  const minTime = minDate.getTime();
-  const maxTime = maxDate.getTime();
-
   for (const vevent of vevents) {
     const event = new ICal.Event(vevent);
-    const startTime = event.startDate!.toJSDate().getTime();
+    const startTimeMs = event.startDate!.toJSDate().getTime();
 
-    if (maxTime < startTime) {
-      continue;
-    }
-
-    if (minTime <= startTime && startTime <= maxTime) {
-      meetings.push(eventToMeeting(event, account));
+    if (maxTimeMs < startTimeMs) {
       continue;
     }
 
@@ -74,18 +66,22 @@ export function parseAndExtractMeetingsInTimeRange(
 
       while ((next = iterator.next())) {
         const nextStartDate = event.getOccurrenceDetails(next).startDate;
-        const nextStartTime = nextStartDate.toJSDate().getTime();
+        const nextStartTimeMs = nextStartDate.toJSDate().getTime();
 
-        if (maxTime < nextStartTime) {
+        if (maxTimeMs < nextStartTimeMs) {
           break;
         }
 
-        if (minTime <= nextStartTime && nextStartTime <= maxTime) {
+        if (minTimeMs <= nextStartTimeMs && nextStartTimeMs <= maxTimeMs) {
           event.startDate = nextStartDate;
           meetings.push(eventToMeeting(event, account));
 
           break;
         }
+      }
+    } else {
+      if (minTimeMs <= startTimeMs && startTimeMs <= maxTimeMs) {
+        meetings.push(eventToMeeting(event, account));
       }
     }
   }

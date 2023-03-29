@@ -3,51 +3,54 @@
 import { createRoot } from "react-dom/client";
 import React from "react";
 import { Container, TextField, Typography, Box, Button } from "@mui/material";
-import { useLocalStorage } from "usehooks-ts";
+import { useChromeStorageLocal } from "use-chrome-storage";
 
-function Options() {
-  const [account, setAccount] = useLocalStorage("account", "");
-  const [calendarUrl, setCalendarUrl] = useLocalStorage("calendarUrl", "");
-  const [updateIntervalMinutes, setUpdateIntervalMinutes] = useLocalStorage(
-    "updateIntervalMinutes",
-    5
+function Settings() {
+  const [account, setAccount] = useChromeStorageLocal("account", "");
+  const [calendarUrl, setCalendarUrl] = useChromeStorageLocal(
+    "calendarUrl",
+    ""
   );
-  const [leadTimeMinutes, setLeadTimeMinutes] = useLocalStorage(
-    "leadTimeMinutes",
-    2.5
-  );
+  // const [updateIntervalMinutes, setUpdateIntervalMinutes] = useChromeStorageLocal(
+  //   "updateIntervalMinutes",
+  //   5
+  // );
+  // const [leadTimeMinutes, setLeadTimeMinutes] = useChromeStorageLocal(
+  //   "leadTimeMinutes",
+  //   2.5
+  // );
+  //
+  // async function handleTest() {
+  //   try {
+  //     const minTimeMs = new Date(2023, 2, 24, 0, 0, 0, 0).getTime();
+  //     const maxTimeMs = new Date(2023, 2, 25, 0, 0, 0, 0).getTime();
 
-  async function handleTest() {
-    try {
-      const minDate = new Date(2023, 2, 24, 0, 0, 0, 0);
-      const maxDate = new Date(2023, 2, 25, 0, 0, 0, 0);
+  //     const worker = new ComlinkWorker<typeof import("./meeting")>(
+  //       new URL("./meeting", import.meta.url)
+  //     );
 
-      const worker = new ComlinkWorker<typeof import("./meeting")>(
-        new URL("./meeting", import.meta.url)
-      );
+  //     console.log("fetching");
+  //     console.time("fetched");
+  //     const ical = await fetch(calendarUrl).then((response) => response.text());
+  //     console.timeEnd("fetched");
 
-      console.log("fetching");
-      console.time("fetched");
-      const ical = await fetch(calendarUrl).then((response) => response.text());
-      console.timeEnd("fetched");
+  //     console.log("parsing");
+  //     console.time("parsed");
+  //     const meetings = await worker.parseAndExtractMeetingsInTimeRange(
+  //       ical,
+  //       account,
+  //       minTimeMs,
+  //       maxTimeMs
+  //     );
+  //     console.timeEnd("parsed");
 
-      console.log("parsing");
-      console.time("parsed");
-      const meetings = await worker.parseAndExtractMeetingsInTimeRange(
-        ical,
-        account,
-        minDate,
-        maxDate
-      );
-      console.timeEnd("parsed");
-
-      for (const meeting of meetings) {
-        console.log(meeting);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  //     for (const meeting of meetings) {
+  //       console.log(meeting);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 
   return (
     <Container maxWidth="md">
@@ -75,6 +78,7 @@ function Options() {
             onChange={(e) => setCalendarUrl(e.target.value)}
             margin="normal"
           />
+          {/*
           <TextField
             id="update-interval-minutes"
             label="Update Interval (minutes)"
@@ -95,12 +99,15 @@ function Options() {
             onChange={(e) => setLeadTimeMinutes(parseInt(e.target.value))}
             margin="normal"
           />
+          */}
         </div>
+        {/*
         <Box sx={{ mt: 2 }}>
           <Button variant="contained" onClick={handleTest}>
             Test fetching and parsing
           </Button>
         </Box>
+        */}
       </Box>
     </Container>
   );
@@ -108,5 +115,5 @@ function Options() {
 
 const root = document.getElementById("root");
 if (root) {
-  createRoot(root).render(<Options />);
+  createRoot(root).render(<Settings />);
 }
