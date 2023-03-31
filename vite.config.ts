@@ -15,7 +15,7 @@ export default defineConfig({
         name: "Maat",
         description:
           "Maat automatically opens Google Meet pages of the meeting that is about to start using iCal URL of Google Calendar.",
-        version: "0.0.1",
+        version: process.env.npm_package_version!,
         icons: ["16", "32", "48", "128"].reduce(
           (result, size) => ({ ...result, [size]: `icon/${size}.png` }),
           {}

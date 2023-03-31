@@ -1,6 +1,6 @@
 {
   "name": "Maat",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Automatically open Google Meet pages of the meeting about to start",
   "main": "",
   "scripts": {
