@@ -43,7 +43,7 @@ async function openMeetUrl() {
 }
 
 function createAlarm() {
-  const oneMinuteMs = 2 * 60 * 1000;
+  const oneMinuteMs = 60 * 1000;
 
   const start =
     Math.floor(Date.now() / fiveMinutesMs) * fiveMinutesMs + oneMinuteMs;
